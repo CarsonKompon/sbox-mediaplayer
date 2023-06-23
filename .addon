@@ -1,0 +1,31 @@
+{
+  "Title": "Carson\u0027s MediaPlayer",
+  "Type": "addon",
+  "Org": "carsonk",
+  "Ident": "mediaplayer",
+  "Tags": "entity mediaplayer media video player youtube mp4 webm runtime",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": null,
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": "/code/",
+  "PackageReferences": [
+    "carsonk.mediahelpers"
+  ],
+  "EditorReferences": null,
+  "Metadata": {
+    "CsProjName": "",
+    "PrimaryAsset": "CarsonK.MediaPlayer",
+    "PhysicsMins": "-1,-1,-1",
+    "PhysicsMaxs": "1,1,1",
+    "RenderMins": "-1,-1,-1",
+    "RenderMaxs": "-1,-1,-1",
+    "Summary": "A working Media Player for Youtube/Direct Links",
+    "Description": "Currently Youtube support will only work in local game instances. Currently waiting on a fix from facepunch :)",
+    "Public": true,
+    "ReplaceTags": "media video player youtube mp4 webm runtime",
+    "ParentPackage": "carsonk.home"
+  }
+}

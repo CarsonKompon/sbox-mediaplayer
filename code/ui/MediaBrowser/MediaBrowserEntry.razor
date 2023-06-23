@@ -1,0 +1,31 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using MediaHelpers;
+
+@namespace Home
+
+<root>
+    <label class="title" text=@GetName()>
+    <label class="length" text=@GetLength()>
+</root>
+
+@code
+{
+
+    public string GetName()
+    {
+        return "Video Name";
+    }
+
+    public string GetLength()
+    {
+        return "0:00";
+    }
+
+
+    @* protected override int BuildHash()
+    {
+        return HashCode.Combine(WebPanel?.Surface.Url, IsButtonValid());
+    } *@
+}

@@ -1,0 +1,138 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using MediaHelpers;
+@attribute [StyleSheet]
+
+@namespace CarsonK
+
+<root>
+    <div class="left">
+        <label class="header">Current Queue:</label>
+        <div class="queue">
+            @foreach(var media in MediaEntity.Queue)
+            {
+                @* <div class="media">
+                    <div class="title">@media.Title</div>
+                    <div class="url">@media.Url</div>
+                    <div class="remove" onclick=@(() => MediaEntity.RemoveMedia(media))>X</div>
+                </div> *@
+            }
+        </div>
+    </div>
+    <div class="right">
+        <div class="input">
+            <TextEntry onsubmit=@CheckSite Value:bind=@MediaUrl Tooltip="Media URL" Placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></TextEntry>
+            <button @ref="ButtonSubmit" class="btn" onclick=@PlayMedia>Submit</button>
+        </div>
+        <div class="websites">
+            <div class="header">Supported Websites:</div>
+            <div class="website" onclick=@OpenYoutube>Youtube</div>
+            @* <div class="website" onclick=@OpenKick>Kick</div> *@
+        </div>
+        <div class="search">
+            <WebPanel @ref="WebPanel"></WebPanel>
+        </div>
+    </div>
+    <img src="/ui/ui_no.png" class="close" onclick="@Close" />
+</root>
+
+@code
+{
+    public static MediaBrowser Current {get;set;}
+    public Button ButtonSubmit {get; set;}
+    public WebPanel WebPanel {get; set;}
+    public string MediaUrl = "";
+    private string PreviousUrl = "";
+    public MediaPlayer MediaEntity {get;set;}
+
+    protected override void OnAfterTreeRender(bool firstTime)
+    {
+        if (firstTime)
+        {
+            WebPanel.Surface.Url = "https://www.youtube.com";
+            PreviousUrl = WebPanel.Surface.Url;
+        }
+
+        if(WebPanel.Surface.Url != PreviousUrl)
+        {
+            MediaUrl = WebPanel.Surface.Url;
+            PreviousUrl = WebPanel.Surface.Url;
+        }
+
+        UpdateButton();
+    }
+
+    public void OpenYoutube()
+    {
+        MediaUrl = "https://www.youtube.com/";
+        CheckSite();
+    }
+
+    public void OpenKick()
+    {
+        MediaUrl = "https://kick.com/";
+        CheckSite();
+    }
+
+    public void PlayMedia()
+    {
+        if(!ButtonSubmit.HasClass("can-press")) return;
+        MediaPlayer.QueueMedia(MediaEntity.NetworkIdent, MediaUrl);
+        Close();
+    }
+
+    public void CheckSite()
+    {
+        if(!MediaUrl.StartsWith("https://") && !MediaUrl.StartsWith("http://")) MediaUrl = "https://" + MediaUrl;
+        WebPanel.Surface.Url = MediaUrl;
+        PreviousUrl = MediaUrl;
+    }
+
+    public bool IsButtonValid()
+    {
+        if(MediaUrl == null || MediaUrl == "") return false;
+        if(MediaHelper.IsYoutubeUrl(MediaUrl)) return true;
+        if(MediaHelper.IsKickUrl(MediaUrl)) return true;
+        if(MediaUrl.EndsWith(".mp4")) return true;
+        if(MediaUrl.EndsWith(".webm")) return true;
+        return false;
+    }
+
+    public void UpdateButton()
+    {
+        ButtonSubmit.SetClass("can-press", IsButtonValid());   
+    }
+    
+
+    [ClientRpc]
+    public static void Open(int networkIdent)
+    {
+        if(Current == null)
+        {
+            Current = Game.RootPanel.AddChild<MediaBrowser>();
+        }
+        Current.MediaEntity = Entity.FindByIndex(networkIdent) as MediaPlayer;
+        Current.AddClass("open");
+        if(Current.WebPanel != null)
+        {
+            Current.WebPanel.Surface.Url = "https://www.youtube.com";
+            Current.WebPanel.Surface.InBackgroundMode = false;
+            Current.WebPanel.Style.Display = DisplayMode.Flex;
+            Current.PreviousUrl = Current.WebPanel.Surface.Url;
+        }
+    }
+
+    public void Close()
+    {
+        WebPanel.Style.Display = DisplayMode.None;
+        WebPanel.Surface.InBackgroundMode = true;
+        Delete(true);
+        Current = null;
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(WebPanel?.Surface.Url, IsButtonValid());
+    }
+}

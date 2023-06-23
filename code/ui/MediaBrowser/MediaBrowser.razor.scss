@@ -1,0 +1,133 @@
+
+MediaBrowser {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    background-color: white;
+    padding: 24px;
+    border-radius: 32px;
+    flex-direction: row;
+    pointer-events: all;
+    display: none;
+
+    .left {
+        height: 100%;
+        width: 25%;
+        flex-direction: column;
+        background-color: rgb(236, 236, 236);
+        border-radius: 16px;
+        padding: 12px;
+
+        .header {
+            font-family: Poppins;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+    }
+
+    .right {
+        height: 100%;
+        flex-grow: 1;
+        flex-direction: column;
+    }
+    
+
+    .input {
+
+        padding: 16px;
+        gap: 8px;
+
+        TextEntry {
+            background-color: lightblue;
+            flex-grow: 1;
+            border-radius: 16px;
+
+            .placeholder {
+                color: black;
+                opacity: 0.6;
+            }
+        }
+
+        Button {
+            min-width: 120px;
+            background-color: rgba(blueviolet, 0.5);
+            border-radius: 16px;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: all 0.1s ease-in-out;
+
+            &.can-press {
+                background-color: blueviolet;
+
+                &:hover {
+                    transform: scale(1.08);
+                }
+            }
+        }
+
+    }
+
+    .websites {
+        gap: 8px;
+        padding-left: 24px;
+        padding-right: 24px;
+        align-items: center;
+
+        .header {
+            font-family: Poppins;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .website {
+            background-color: #dddddd;
+            padding: 4px 12px;
+            border-radius: 16px;
+            transition: all 0.1s ease-in-out;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            &:active {
+                transform: scale(0.9);
+            }
+        }
+    }
+
+    .search {
+        flex-grow: 1;
+        padding: 32px;
+
+        WebPanel {
+            flex-grow: 1;
+        }
+    }
+
+    .close {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        border-radius: 100%;
+        background-image-tint: black;
+        pointer-events: all;
+
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+            background-color: rgba(white, 0.2);
+        }
+    }
+
+    &.open {
+        display: flex;
+    }
+
+}
