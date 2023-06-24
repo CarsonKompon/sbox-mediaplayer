@@ -7,19 +7,31 @@
 @namespace CarsonK
 
 <root>
-    <div class="left">
-        <label class="header">Current Queue:</label>
-        <div class="queue">
-            @foreach(var media in MediaEntity.Queue)
+    @if(MediaEntity != null && (MediaEntity.CurrentlyPlaying != null || MediaEntity.Queue.Count > 0))
+    {
+        <div class="left">
+            @if(MediaEntity.CurrentlyPlaying != null)
             {
-                @* <div class="media">
-                    <div class="title">@media.Title</div>
-                    <div class="url">@media.Url</div>
-                    <div class="remove" onclick=@(() => MediaEntity.RemoveMedia(media))>X</div>
-                </div> *@
+                <label class="header">Currently Playing:</label>
+                <MediaBrowserEntry Video=@MediaEntity.CurrentlyPlaying />
+            }
+            @if(MediaEntity.Queue.Count > 0)
+            {
+                <label class="header">Current Queue:</label>
+                <div class="queue">
+                    @foreach(var media in MediaEntity.Queue)
+                    {
+                        <MediaBrowserEntry Video=@media />
+                        @* <div class="media">
+                            <div class="title">@media.Title</div>
+                            <div class="url">@media.Url</div>
+                            <div class="remove" onclick=@(() => MediaEntity.RemoveMedia(media))>X</div>
+                        </div> *@
+                    }
+                </div>
             }
         </div>
-    </div>
+    }
     <div class="right">
         <div class="input">
             <TextEntry onsubmit=@CheckSite Value:bind=@MediaUrl Tooltip="Media URL" Placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></TextEntry>

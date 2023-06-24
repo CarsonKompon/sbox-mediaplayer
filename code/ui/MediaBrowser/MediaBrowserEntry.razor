@@ -3,15 +3,29 @@
 @using Sandbox.UI;
 @using MediaHelpers;
 
-@namespace Home
+@namespace CarsonK
 
-<root>
-    <label class="title" text=@GetName()>
-    <label class="length" text=@GetLength()>
+<root class="media">
+    @if(Video != null)
+    {
+        <div @ref="ThumbnailDiv" class="thumb">
+
+        </div>
+        <div class="names">
+            <label class="title" text=@Video.Title />
+            <label class="url" text=@Video.Url />
+        </div>
+        <div class="remove" onclick=@RemoveVideo >X</div>
+    }
 </root>
 
 @code
 {
+
+    public Panel ThumbnailDiv { get; set; }
+    public MediaVideo Video { get; set; }
+
+
 
     public string GetName()
     {
@@ -23,9 +37,28 @@
         return "0:00";
     }
 
-
-    @* protected override int BuildHash()
+    protected override void OnAfterTreeRender(bool firstTime)
     {
-        return HashCode.Combine(WebPanel?.Surface.Url, IsButtonValid());
-    } *@
+        base.OnAfterTreeRender(firstTime);
+
+        if(firstTime)
+        {
+            ThumbnailDiv.Style.BackgroundImage = Video.Thumbnail;
+        }
+    }
+
+
+    public void RemoveVideo()
+    {
+        if(MediaBrowser.Current == null) return;
+        MediaPlayer mediaPlayer = MediaBrowser.Current.MediaEntity;
+        MediaPlayer.RemoveMedia(mediaPlayer.NetworkIdent, Video.Url);
+    }
+    
+
+    protected override int BuildHash()
+    {
+        return base.BuildHash();
+    }
 }
+

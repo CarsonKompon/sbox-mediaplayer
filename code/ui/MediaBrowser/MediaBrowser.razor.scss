@@ -19,12 +19,20 @@ MediaBrowser {
         background-color: rgb(236, 236, 236);
         border-radius: 16px;
         padding: 12px;
+        gap: 8px;
 
         .header {
             font-family: Poppins;
             font-size: 24px;
             font-weight: bold;
             color: black;
+        }
+
+        .queue {
+            flex-grow: 1;
+            gap: 8px;
+            flex-direction: column;
+            overflow: scroll;
         }
     }
 
@@ -130,4 +138,66 @@ MediaBrowser {
         display: flex;
     }
 
+}
+
+MediaBrowserEntry
+{
+    background-color: rgb(194, 194, 194);
+    border-radius: 16px;
+    height: 92px;
+    font-family: Poppins;
+    overflow: hidden;
+    align-items: center;
+    padding: 8px;
+    padding-right: 48px;
+    gap: 4px;
+    flex-shrink: 0;
+
+    .thumb
+    {
+        aspect-ratio: 1.77777778;
+        width: 92px;
+        background-color: black;
+        justify-content: center;
+        align-items: center;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .names
+    {
+        flex-direction: column;
+        text-overflow: ellipsis;
+        height: 80%;
+
+        .title
+        {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .url
+        {
+            font-size: 16px;
+            color: rgba(black, 0.6);
+            font-style: italic;
+        }
+    }
+
+    .remove
+    {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+        background-color: rgba(white, 0);
+        transition: all 0.1s ease;
+        padding: 0px 8px;
+        border-radius: 100%;
+
+        &:hover
+        {
+            background-color: rgba(white, 0.4);
+        }
+    }
 }
