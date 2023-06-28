@@ -105,7 +105,7 @@
     {
         if(MediaUrl == null || MediaUrl == "") return false;
         if(MediaHelper.IsYoutubeUrl(MediaUrl)) return true;
-        if(MediaHelper.IsKickUrl(MediaUrl)) return true;
+        @* if(MediaHelper.IsKickUrl(MediaUrl)) return true; *@
         if(MediaUrl.EndsWith(".mp4")) return true;
         if(MediaUrl.EndsWith(".webm")) return true;
         return false;

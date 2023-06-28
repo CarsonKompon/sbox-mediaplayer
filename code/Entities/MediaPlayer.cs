@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
 using Editor;
-using System.Linq;
 using MediaHelpers;
 
 namespace CarsonK;
@@ -13,7 +12,7 @@ namespace CarsonK;
 /// <summary>
 /// A placeable TV that you can queue media on
 /// </summary>
-[EditorModel("models/mediaplayer_dev.vmdl")]
+[EditorModel("models/items/electronics/tv_medium_onstand.vmdl")]
 [Library("carson_mediaplayer"), HammerEntity]
 public partial class MediaPlayer : ModelEntity, IUse
 {
@@ -43,7 +42,7 @@ public partial class MediaPlayer : ModelEntity, IUse
     public override void Spawn()
     {
         base.Spawn();
-        SetModel("models/mediaplayer_dev.vmdl");
+        SetModel("models/items/electronics/tv_medium_onstand.vmdl");
         SetupPhysicsFromModel(MotionType);
     }
 
@@ -168,17 +167,17 @@ public partial class MediaPlayer : ModelEntity, IUse
             }
         };
 
-        if(MediaHelper.IsYoutubeUrl(url))
-        {
-            var streamUrl = await MediaHelper.GetUrlFromYoutubeUrl(url);
-            Video.Play(streamUrl);
-        }
-        else if(MediaHelper.IsKickUrl(url))
-        {
-            var streamUrl = await MediaHelper.GetUrlFromKickUrl(url);
-            Video.Play(streamUrl);
-        }
-        else
+        // if(MediaHelper.IsYoutubeUrl(url))
+        // {
+        //     var streamUrl = await MediaHelper.GetUrlFromYoutubeUrl(url);
+        //     Video.Play(streamUrl);
+        // }
+        // else if(MediaHelper.IsKickUrl(url))
+        // {
+        //     var streamUrl = await MediaHelper.GetUrlFromKickUrl(url);
+        //     Video.Play(streamUrl);
+        // }
+        // else
         {
             Video.Play(url);
         }
