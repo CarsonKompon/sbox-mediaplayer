@@ -62,10 +62,8 @@ public partial class MediaPlayer : ModelEntity, IUse
         if(!LoadingVideo && !IsPlaying && Queue.Count() > 0 && Video == null)
         {
             CurrentlyPlaying = Queue[0];
-            PlayVideoForAll(CurrentlyPlaying.Url);
             Queue.RemoveAt(0);
-            VideoStart = 0f;
-            LoadingVideo = true;
+            PlayVideoForAll(CurrentlyPlaying.Url);
         }
     }
 
@@ -148,28 +146,35 @@ public partial class MediaPlayer : ModelEntity, IUse
         SkipCurrent();
     }
 
-    public void PlayVideoForAll(string url)
+    public async void PlayVideoForAll(string url)
     {
-        PlayVideo(url);
+        LoadingVideo = true;
+        VideoStart = 0f;
+
+        if(MediaHelper.IsYoutubeUrl(url))
+        {
+            YoutubePlayerResponse youtube = await MediaHelper.GetYoutubePlayerResponseFromUrl(url);
+            CurrentLength = youtube.Duration.Seconds;
+            string streamUrl = youtube.GetStreamUrl();
+            PlayVideoRpc(streamUrl);
+            return;
+        }
+
+        
         PlayVideoRpc(url);
         IsPlaying = true;
     }
+
 
     public async void PlayVideo(string url)
     {
         Video = new VideoPlayer();
         Video.OnAudioReady = () => Video.PlayAudio(this);
-        Video.OnLoaded = () => {
-            if(Game.IsServer)
-            {
-                LoadingVideo = false;
-                CurrentLength = Video.Duration;
-            }
-        };
 
         if(MediaHelper.IsYoutubeUrl(url))
         {
-            var streamUrl = await MediaHelper.GetUrlFromYoutubeUrl(url);
+            YoutubePlayerResponse youtube = await MediaHelper.GetYoutubePlayerResponseFromUrl(url);
+            string streamUrl = youtube.GetStreamUrl();
             Log.Info(streamUrl);
             Video.Play(streamUrl);
         }

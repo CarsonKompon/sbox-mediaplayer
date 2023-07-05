@@ -32,7 +32,7 @@ public partial class MediaVideo : BaseNetworkable
 
     public async void LoadFromYoutube(string url)
     {
-        var youtubePlayer = await MediaHelper.GetYoutubePlayerResponse(MediaHelper.GetIdFromYoutubeUrl(url));
+        var youtubePlayer = await MediaHelper.GetYoutubePlayerResponseFromUrl(url);
         Title = youtubePlayer.Title;
         Author = youtubePlayer.Author;
         Description = youtubePlayer.Description;
