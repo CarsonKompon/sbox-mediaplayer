@@ -13,7 +13,8 @@
   "CodePath": "/code/",
   "PackageReferences": [
     "carsonk.mediahelpers",
-    "luke.tv_flatscreen_stand"
+    "luke.tv_flatscreen_stand",
+    "luke.tv_flatscreen"
   ],
   "EditorReferences": null,
   "Metadata": {

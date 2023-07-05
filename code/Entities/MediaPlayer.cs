@@ -29,7 +29,7 @@ public partial class MediaPlayer : ModelEntity, IUse
     /// Physics motion type.
     /// </summary>
     [Property( Title = "Physics Type" )]
-    private PhysicsMotionType MotionType {get; set;} = PhysicsMotionType.Dynamic;
+    protected PhysicsMotionType MotionType {get; set;} = PhysicsMotionType.Dynamic;
 
     public VideoPlayer Video { get; set; }
     public Material ScreenMaterial { get; set; }
@@ -104,7 +104,7 @@ public partial class MediaPlayer : ModelEntity, IUse
     }
 
     [ConCmd.Server]
-    public static async void RemoveMedia(int networkIdent, string url)
+    public static void RemoveMedia(int networkIdent, string url)
     {
         var entity = Entity.FindByIndex(networkIdent);
         if(entity is not MediaPlayer mediaPlayer)
@@ -167,20 +167,17 @@ public partial class MediaPlayer : ModelEntity, IUse
             }
         };
 
-        // if(MediaHelper.IsYoutubeUrl(url))
-        // {
-        //     var streamUrl = await MediaHelper.GetUrlFromYoutubeUrl(url);
-        //     Video.Play(streamUrl);
-        // }
-        // else if(MediaHelper.IsKickUrl(url))
-        // {
-        //     var streamUrl = await MediaHelper.GetUrlFromKickUrl(url);
-        //     Video.Play(streamUrl);
-        // }
-        // else
+        if(MediaHelper.IsYoutubeUrl(url))
+        {
+            var streamUrl = await MediaHelper.GetUrlFromYoutubeUrl(url);
+            Log.Info(streamUrl);
+            Video.Play(streamUrl);
+        }
+        else
         {
             Video.Play(url);
         }
+
         CurrentLength = Video.Duration;
     }
 
