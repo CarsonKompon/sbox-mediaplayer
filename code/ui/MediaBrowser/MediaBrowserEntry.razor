@@ -41,10 +41,7 @@
     {
         base.OnAfterTreeRender(firstTime);
 
-        if(firstTime)
-        {
-            ThumbnailDiv.Style.BackgroundImage = Video.Thumbnail;
-        }
+        ThumbnailDiv.Style.BackgroundImage = Video.Thumbnail;
     }
 
 
@@ -53,12 +50,6 @@
         if(MediaBrowser.Current == null) return;
         MediaPlayer mediaPlayer = MediaBrowser.Current.MediaEntity;
         MediaPlayer.RemoveMedia(mediaPlayer.NetworkIdent, Video.Url);
-    }
-    
-
-    protected override int BuildHash()
-    {
-        return base.BuildHash();
     }
 }
 

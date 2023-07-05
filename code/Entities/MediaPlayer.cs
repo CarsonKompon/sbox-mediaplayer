@@ -44,6 +44,14 @@ public partial class MediaPlayer : ModelEntity, IUse
         base.Spawn();
         SetModel("models/items/electronics/tv_medium_onstand.vmdl");
         SetupPhysicsFromModel(MotionType);
+    
+        if(Game.IsClient)
+        {
+            if(IsPlaying && CurrentlyPlaying != null)
+            {
+                PlayVideo(CurrentlyPlaying.Url);
+            }
+        }
     }
 
     protected override void OnDestroy()
@@ -192,7 +200,7 @@ public partial class MediaPlayer : ModelEntity, IUse
             Video.Play(url);
         }
 
-        CurrentLength = Video.Duration;
+        Video.Seek(CurrentTime);
     }
 
     [ClientRpc]
