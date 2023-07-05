@@ -158,8 +158,6 @@ public partial class MediaPlayer : ModelEntity, IUse
             YoutubePlayerResponse youtube = await MediaHelper.GetYoutubePlayerResponseFromUrl(url);
             CurrentLength = youtube.DurationSeconds + 3f;
             CurrentTime = 0f;
-            Log.Info("SET LENGTH:");
-            Log.Info(CurrentLength);
             string streamUrl = youtube.GetStreamUrl();
             PlayVideoRpc(streamUrl);
             FinishLoad();
