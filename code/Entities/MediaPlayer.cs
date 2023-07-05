@@ -21,9 +21,9 @@ public partial class MediaPlayer : ModelEntity, IUse
     [Net] public List<MediaVideo> Queue {get; set;} = new();
     [Net] public MediaVideo CurrentlyPlaying { get; set; }
     [Net] public float CurrentLength { get; set; } = 5;
-    [Net] public RealTimeSince VideoStart { get; set; } = 0;
+    [Net] public RealTimeSince CurrentTime { get; set; } = 0;
     [Net] public bool IsPlaying { get; set; } = false;
-    private bool LoadingVideo { get; set; } = false;
+    [Net] private bool LoadingVideo { get; set; } = false;
 
     /// <summary>
     /// Physics motion type.
@@ -55,7 +55,7 @@ public partial class MediaPlayer : ModelEntity, IUse
     [GameEvent.Tick.Server]
     public void ServerTick()
     {
-        if(IsPlaying && Video.PlaybackTime > 0 && Video.PlaybackTime > Video.Duration)
+        if(!LoadingVideo && IsPlaying && CurrentTime > CurrentLength)
         {
             SkipCurrentAll();
         }
@@ -126,7 +126,10 @@ public partial class MediaPlayer : ModelEntity, IUse
     public void SkipCurrentAll()
     {
         
-        SkipCurrent();
+        IsPlaying = false;
+        LoadingVideo = false;
+        CurrentlyPlaying = null;
+
         SkipCurrentRpc();
     }
 
@@ -135,9 +138,7 @@ public partial class MediaPlayer : ModelEntity, IUse
         
         Video.Dispose();
         Video = null;
-        IsPlaying = false;
-        LoadingVideo = false;
-        CurrentlyPlaying = null;
+        ScreenMaterial.Set("Color", Texture.White);
     }
 
     [ClientRpc]
@@ -149,19 +150,29 @@ public partial class MediaPlayer : ModelEntity, IUse
     public async void PlayVideoForAll(string url)
     {
         LoadingVideo = true;
-        VideoStart = 0f;
+        CurrentTime = 0f;
+        CurrentLength = 15f;
 
         if(MediaHelper.IsYoutubeUrl(url))
         {
             YoutubePlayerResponse youtube = await MediaHelper.GetYoutubePlayerResponseFromUrl(url);
-            CurrentLength = youtube.Duration.Seconds;
+            CurrentLength = youtube.DurationSeconds + 3f;
+            CurrentTime = 0f;
+            Log.Info("SET LENGTH:");
+            Log.Info(CurrentLength);
             string streamUrl = youtube.GetStreamUrl();
             PlayVideoRpc(streamUrl);
+            FinishLoad();
             return;
         }
 
-        
         PlayVideoRpc(url);
+        FinishLoad();
+    }
+
+    void FinishLoad()
+    {
+        LoadingVideo = false;
         IsPlaying = true;
     }
 
