@@ -20,14 +20,14 @@
   "Metadata": {
     "CsProjName": "",
     "PrimaryAsset": "CarsonK.MediaPlayer",
-    "PhysicsMins": "-1,-1,-1",
-    "PhysicsMaxs": "1,1,1",
-    "RenderMins": "-1,-1,-1",
-    "RenderMaxs": "-1,-1,-1",
+    "PhysicsMins": "-17.45702,-48.8147,-0.001349817",
+    "PhysicsMaxs": "4.591924,48.8147,60.24206",
+    "RenderMins": "-17.45701,-48.8147,-0.000003695488",
+    "RenderMaxs": "3.778352,48.8147,60.24206",
     "Summary": "A working Media Player for Youtube/Direct Links",
     "Description": "Currently Youtube support will only work in local game instances. Currently waiting on a fix from facepunch :)",
     "Public": true,
     "ReplaceTags": "media video player youtube mp4 webm runtime",
-    "ParentPackage": "carsonk.home"
+    "ParentPackage": "facepunch.sandbox"
   }
 }
