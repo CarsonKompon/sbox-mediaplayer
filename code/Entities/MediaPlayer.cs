@@ -12,7 +12,6 @@ namespace CarsonK;
 /// <summary>
 /// A placeable TV that you can queue media on
 /// </summary>
-[EditorModel("models/items/electronics/tv_medium_onstand.vmdl")]
 [Library("carson_mediaplayer"), HammerEntity]
 public partial class MediaPlayer : ModelEntity, IUse
 {
@@ -33,6 +32,7 @@ public partial class MediaPlayer : ModelEntity, IUse
 
     public VideoPlayer Video { get; set; }
     public Material ScreenMaterial { get; set; }
+    public double Volume { get; set; } = 0.5f;
 
     public MediaPlayer()
     {
@@ -42,7 +42,7 @@ public partial class MediaPlayer : ModelEntity, IUse
     public override void Spawn()
     {
         base.Spawn();
-        SetModel("models/items/electronics/tv_medium_onstand.vmdl");
+        Model = Cloud.Model("luke.tv_flatscreen_stand");
         SetupPhysicsFromModel(MotionType);
     }
 

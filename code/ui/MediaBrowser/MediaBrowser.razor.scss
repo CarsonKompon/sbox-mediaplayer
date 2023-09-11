@@ -11,6 +11,7 @@ MediaBrowser {
     flex-direction: row;
     pointer-events: all;
     display: none;
+    font-size: 20px;
 
     .left {
         height: 100%;
@@ -33,6 +34,21 @@ MediaBrowser {
             gap: 8px;
             flex-direction: column;
             overflow: scroll;
+            color: black;
+        }
+
+        .volume
+        {
+            color: black;
+            font-size: 28px;
+
+            .slidercontrol .inner .track
+            {
+                .track-active, .thumb
+                {
+                    background-color: blueviolet;                
+                }
+            }
         }
     }
 
@@ -52,6 +68,7 @@ MediaBrowser {
             background-color: lightblue;
             flex-grow: 1;
             border-radius: 16px;
+            color: black;
 
             .placeholder {
                 color: black;
@@ -99,6 +116,7 @@ MediaBrowser {
             padding: 4px 12px;
             border-radius: 16px;
             transition: all 0.1s ease-in-out;
+            color: black;
 
             &:hover {
                 transform: scale(1.1);
@@ -123,14 +141,20 @@ MediaBrowser {
         position: absolute;
         top: 12px;
         right: 18px;
+        width: 24px;
+        height: 24px;
         border-radius: 100%;
-        background-image-tint: black;
+        background-color: rgba(white, 0.2);
         pointer-events: all;
+        color: black;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
 
         transition: all 0.1s ease-in-out;
 
         &:hover {
-            background-color: rgba(white, 0.2);
+            background-color: rgba(black, 0.2);
         }
     }
 
@@ -169,6 +193,7 @@ MediaBrowserEntry
         flex-direction: column;
         text-overflow: ellipsis;
         height: 80%;
+        color: black;
 
         .title
         {

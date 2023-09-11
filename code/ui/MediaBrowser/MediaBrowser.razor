@@ -10,11 +10,17 @@
     @if(MediaEntity != null && (MediaEntity.CurrentlyPlaying != null || MediaEntity.Queue.Count > 0))
     {
         <div class="left">
+
             @if(MediaEntity.CurrentlyPlaying != null)
             {
+                <div class="volume">
+                    <i>volume_up</i>
+                    <SliderControl min="0.0" max="1.0" step="0.01" Value:bind="@Volume" ></SliderControl>
+                </div>
                 <label class="header">Currently Playing:</label>
                 <MediaBrowserEntry Video=@MediaEntity.CurrentlyPlaying />
             }
+
             @if(MediaEntity.Queue.Count > 0)
             {
                 <label class="header">Current Queue:</label>
@@ -22,31 +28,34 @@
                     @foreach(var media in MediaEntity.Queue)
                     {
                         <MediaBrowserEntry Video=@media />
-                        @* <div class="media">
-                            <div class="title">@media.Title</div>
-                            <div class="url">@media.Url</div>
-                            <div class="remove" onclick=@(() => MediaEntity.RemoveMedia(media))>X</div>
-                        </div> *@
                     }
                 </div>
             }
+
         </div>
     }
+
     <div class="right">
+
         <div class="input">
             <TextEntry onsubmit=@CheckSite Value:bind=@MediaUrl Tooltip="Media URL" Placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></TextEntry>
-            <button @ref="ButtonSubmit" class="btn" onclick=@PlayMedia>Submit</button>
+            <button @ref="ButtonSubmit" class="btn" onclick=@PlayMedia >Submit</button>
         </div>
+
         <div class="websites">
             <div class="header">Supported Websites:</div>
-            <div class="website" onclick=@OpenYoutube>Youtube</div>
+            <div class="website" onclick=@OpenYoutube >Youtube</div>
             @* <div class="website" onclick=@OpenKick>Kick</div> *@
         </div>
+
         <div class="search">
             <WebPanel @ref="WebPanel"></WebPanel>
         </div>
+
     </div>
-    <img src="/ui/ui_no.png" class="close" onclick="@Close" />
+
+    <i class="close" onclick=@Close>close</i>
+
 </root>
 
 @code
@@ -57,6 +66,19 @@
     public string MediaUrl = "";
     private string PreviousUrl = "";
     public MediaPlayer MediaEntity {get;set;}
+    public double Volume
+    {
+        get
+        {
+            if(MediaEntity == null) return 0.0;
+            return MediaEntity.Volume;
+        }
+        set
+        {
+            if(MediaEntity == null) return;
+            MediaEntity.Volume = value;
+        }
+    }
 
     protected override void OnAfterTreeRender(bool firstTime)
     {
